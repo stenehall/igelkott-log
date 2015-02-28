@@ -1,16 +1,13 @@
 var Fs = require('fs'),
-    Colors = require('colors');
-
+Colors = require('colors');
 
 var Log = function Log () {
-
   this.listeners = {sending: this.sending, receiving: this.receiving};
 
   // Lets create the db folder if it doesn't exist
   Fs.stat('./log', function(err, stat) {
-    if(err !== null && err.code === 'ENOENT')
-    {
-        Fs.mkdir('log');
+    if (err !== null && err.code === 'ENOENT') {
+      Fs.mkdir('log');
     }
   });
 
@@ -26,6 +23,11 @@ var Log = function Log () {
     text = "Message   | "+text;
     console.log(text.yellow);
   };
+
+  this.igelkott.error = function log(text) {
+    text = "Error     | "+text;
+    console.log(text.red);
+  };
 };
 
 Log.prototype.sending = function sending (message) {
@@ -39,6 +41,5 @@ Log.prototype.receiving = function receiving (message) {
   console.log(log.cyan);
   Fs.appendFile("./log/log", message.toString().replace("\r\n",'') + "\n");
 }.bind(this);
-
 
 exports.Plugin = Log;
